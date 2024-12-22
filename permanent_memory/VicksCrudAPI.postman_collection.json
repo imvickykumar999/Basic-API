@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "2bd8cfe2-6942-4157-a16a-92a41343ee1e",
+		"name": "LocalHost",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14965750",
+		"_collection_link": "https://gold-trinity-363196.postman.co/workspace/GitHub-Views-Tracker~d48918f1-45f9-4583-b551-b9e5c7e535d1/collection/14965750-2bd8cfe2-6942-4157-a16a-92a41343ee1e?action=share&source=collection_link&creator=14965750"
+	},
+	"item": [
+		{
+			"name": "GetAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://vickscrudapi.pythonanywhere.com",
+					"protocol": "https",
+					"host": [
+						"vickscrudapi",
+						"pythonanywhere",
+						"com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://vickscrudapi.pythonanywhere.com/get/1",
+					"protocol": "https",
+					"host": [
+						"vickscrudapi",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "PQR",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "pqr@bol7.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://vickscrudapi.pythonanywhere.com/post/",
+					"protocol": "https",
+					"host": [
+						"vickscrudapi",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"post",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateByID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "New Updated",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "new@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://vickscrudapi.pythonanywhere.com/update/1",
+					"protocol": "https",
+					"host": [
+						"vickscrudapi",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"update",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteByID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://vickscrudapi.pythonanywhere.com/delete/1",
+					"protocol": "https",
+					"host": [
+						"vickscrudapi",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"delete",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PatchByID",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "www",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "prq@bol7.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://vickscrudapi.pythonanywhere.com/patch/2",
+					"protocol": "https",
+					"host": [
+						"vickscrudapi",
+						"pythonanywhere",
+						"com"
+					],
+					"path": [
+						"patch",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
