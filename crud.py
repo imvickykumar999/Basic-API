@@ -60,6 +60,28 @@ def update_user(user_id):
         }
     })
 
+@app.route('/patch/<user_id>', methods=['PATCH'])
+def patch_user(user_id):
+    if user_id not in database:
+        return jsonify({"error": "User not found!"}), 404
+
+    data = request.form
+    name = data.get('name')
+    email = data.get('email')
+
+    if not name and not email:
+        return jsonify({"error": "At least one field (name or email) is required!"}), 400
+
+    if name:
+        database[user_id]['name'] = name
+    if email:
+        database[user_id]['email'] = email
+
+    return jsonify({
+        "message": "User data updated successfully!",
+        "data": database[user_id]
+    })
+
 @app.route('/delete/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
     if user_id not in database:
