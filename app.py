@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
-import uuid
 
 app = Flask(__name__)
 database = {}
+next_id = 1  # Initialize the next available ID
 
 @app.route('/')
 def list_ids():
@@ -10,13 +10,15 @@ def list_ids():
 
 @app.route('/post/', methods=['POST'])
 def submit():
+    global next_id  # Use the global variable
     name = request.form.get('name')
     email = request.form.get('email')
 
     if not name or not email:
         return jsonify({"error": "Name and email are required!"}), 400
 
-    user_id = str(uuid.uuid4())
+    user_id = next_id
+    next_id += 1  # Increment the next available ID
     database[user_id] = {"name": name, "email": email}
 
     return jsonify({
@@ -28,7 +30,7 @@ def submit():
         }
     })
 
-@app.route('/get/<user_id>', methods=['GET'])
+@app.route('/get/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     user_data = database.get(user_id)
     if not user_data:
@@ -39,7 +41,7 @@ def get_user(user_id):
         "data": user_data
     })
 
-@app.route('/update/<user_id>', methods=['PUT'])
+@app.route('/update/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
     name = request.form.get('name')
     email = request.form.get('email')
@@ -60,7 +62,7 @@ def update_user(user_id):
         }
     })
 
-@app.route('/patch/<user_id>', methods=['PATCH'])
+@app.route('/patch/<int:user_id>', methods=['PATCH'])
 def patch_user(user_id):
     if user_id not in database:
         return jsonify({"error": "User not found!"}), 404
@@ -82,7 +84,7 @@ def patch_user(user_id):
         "data": database[user_id]
     })
 
-@app.route('/delete/<user_id>', methods=['DELETE'])
+@app.route('/delete/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     if user_id not in database:
         return jsonify({"error": "User not found!"}), 404
