@@ -1,5 +1,7 @@
 
-# `Differences`:
+># `Deployed CRUD`:
+>
+>![image](https://github.com/user-attachments/assets/c57c884e-43eb-4fcf-bd17-a656a2d45552)
 
 - PUT is used to update an existing resource with a new version. It typically requires the entire resource data to be sent in the request.
 
