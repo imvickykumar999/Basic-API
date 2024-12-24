@@ -1,193 +1,94 @@
-# API Documentation for Flask Application
+# API Documentation
 
-This API provides functionality for managing user data securely. Each endpoint requires authentication using the `/login` route before access is allowed.
+## Base URL
+`https://vickscrudapi.pythonanywhere.com`
 
 ---
 
-## Authentication
+## Methods
 
-### Login
-**Method:** `POST`  
-**URL:** `/login`  
-**Description:** Authenticates the user and creates a session.  
-**Request Parameters:**  
-- `username` (required): The username.  
-- `password` (required): The password.  
+### 1. POST Method
+Use this method to create a new user record.
 
-**Example cURL:**
+**Endpoint:**
+`/post/`
+
+**Request:**
 ```bash
-curl -X POST http://127.0.0.1:5000/login -d "username=admin" -d "password=password123"
+curl -X POST https://vickscrudapi.pythonanywhere.com/post/ \
+-d "name=John Doe" \
+-d "email=johndoe@example.com"
 ```
 
-**Response:**
-```json
-{
-  "message": "Login successful!"
-}
-```
+**Parameters:**
+- `name` (string): The name of the user.
+- `email` (string): The email address of the user.
 
-### Logout
-**Method:** `POST`  
-**URL:** `/logout`  
-**Description:** Logs out the user and clears the session.  
+---
 
-**Example cURL:**
+### 2. GET Method
+Retrieve all user records.
+
+**Endpoint:**
+`/`
+
+**Request:**
 ```bash
-curl -X POST http://127.0.0.1:5000/logout
-```
-
-**Response:**
-```json
-{
-  "message": "Logged out successfully!"
-}
+curl -X GET https://vickscrudapi.pythonanywhere.com/
 ```
 
 ---
 
-## User Management Endpoints
+### 3. UPDATE Method
+Update an existing user record by ID.
 
-### List All User IDs
-**Method:** `GET`  
-**URL:** `/`  
-**Description:** Lists all user IDs with their access paths.  
+**Endpoint:**
+`/update/<id>`
 
-**Example cURL:**
+**Request:**
 ```bash
-curl -X GET http://127.0.0.1:5000/
+curl -X PUT https://vickscrudapi.pythonanywhere.com/update/1 \
+-d "name=Jane Doe" \
+-d "email=janedoe@example.com"
 ```
 
-**Response:**
-```json
-{
-  "ids": ["/get/1", "/get/2"]
-}
+**Parameters:**
+- `name` (string): The updated name of the user.
+- `email` (string): The updated email address of the user.
+
+---
+
+### 4. GET by ID Method
+Retrieve a user record by its ID.
+
+**Endpoint:**
+`/get/<id>`
+
+**Request:**
+```bash
+curl -X GET https://vickscrudapi.pythonanywhere.com/get/1
 ```
 
 ---
 
-### Create User
-**Method:** `POST`  
-**URL:** `/post/`  
-**Description:** Adds a new user to the database.  
-**Request Parameters:**  
-- `name` (required): The user's name.  
-- `email` (required): The user's email.  
+### 5. PATCH Method
+Partially update a user record by ID.
 
-**Example cURL:**
+**Endpoint:**
+`/patch/<id>`
+
+**Request:**
 ```bash
-curl -X POST http://127.0.0.1:5000/post/ -d "name=John Doe" -d "email=johndoe@example.com"
+curl -X PATCH https://vickscrudapi.pythonanywhere.com/patch/1 \
+-d "email=newemail@example.com"
 ```
 
-**Response:**
-```json
-{
-  "message": "Data submitted successfully!",
-  "user_id": 1,
-  "data": {
-    "name": "John Doe",
-    "email": "johndoe@example.com"
-  }
-}
-```
-
----
-
-### Retrieve User by ID
-**Method:** `GET`  
-**URL:** `/get/<user_id>`  
-**Description:** Retrieves the data of a user by their ID.  
-
-**Example cURL:**
-```bash
-curl -X GET http://127.0.0.1:5000/get/1
-```
-
-**Response:**
-```json
-{
-  "message": "User data retrieved successfully!",
-  "data": {
-    "name": "John Doe",
-    "email": "johndoe@example.com"
-  }
-}
-```
-
----
-
-### Update User
-**Method:** `PUT`  
-**URL:** `/update/<user_id>`  
-**Description:** Updates the user's data entirely.  
-**Request Parameters:**  
-- `name` (required): The updated name.  
-- `email` (required): The updated email.  
-
-**Example cURL:**
-```bash
-curl -X PUT http://127.0.0.1:5000/update/1 -d "name=Jane Doe" -d "email=janedoe@example.com"
-```
-
-**Response:**
-```json
-{
-  "message": "User data updated successfully!",
-  "data": {
-    "name": "Jane Doe",
-    "email": "janedoe@example.com"
-  }
-}
-```
-
----
-
-### Partially Update User
-**Method:** `PATCH`  
-**URL:** `/patch/<user_id>`  
-**Description:** Updates one or more fields of the user's data.  
-**Request Parameters (optional):**  
-- `name`: The updated name.  
-- `email`: The updated email.  
-
-**Example cURL:**
-```bash
-curl -X PATCH http://127.0.0.1:5000/patch/1 -d "email=newemail@example.com"
-```
-
-**Response:**
-```json
-{
-  "message": "User data updated successfully!",
-  "data": {
-    "name": "Jane Doe",
-    "email": "newemail@example.com"
-  }
-}
-```
-
----
-
-### Delete User
-**Method:** `DELETE`  
-**URL:** `/delete/<user_id>`  
-**Description:** Deletes the user's data by ID.  
-
-**Example cURL:**
-```bash
-curl -X DELETE http://127.0.0.1:5000/delete/1
-```
-
-**Response:**
-```json
-{
-  "message": "User data deleted successfully!"
-}
-```
+**Parameters:**
+- `email` (string): The new email address of the user.
 
 ---
 
 ## Notes
-1. **Authentication Required:** All routes except `/login` and `/logout` require the user to be logged in.
-2. **Session Persistence:** Ensure that cookies are enabled for session-based authentication.
-3. **Security:** Use a strong secret key for sessions and secure connections (e.g., HTTPS) in production.
+- Replace `<id>` with the actual user ID you want to access or update.
+- Ensure the required parameters are provided for each method.
+- The API uses standard HTTP status codes to indicate success or errors.
