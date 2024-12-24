@@ -1,6 +1,6 @@
-# API Documentation for Flask Application
+# API Documentation with Cookie Management
 
-This API provides functionality for managing user data securely. Each endpoint requires authentication using the `/login` route before access is allowed.
+This API requires authentication using a login mechanism. Cookies are used to manage the user session, and they must be passed with subsequent requests to authenticated endpoints.
 
 ---
 
@@ -9,14 +9,14 @@ This API provides functionality for managing user data securely. Each endpoint r
 ### Login
 **Method:** `POST`  
 **URL:** `/login`  
-**Description:** Authenticates the user and creates a session.  
+**Description:** Authenticates the user and creates a session. Cookies will be returned in the response and must be saved for subsequent requests.  
 **Request Parameters:**  
 - `username` (required): The username.  
 - `password` (required): The password.  
 
 **Example cURL:**
 ```bash
-curl -X POST http://127.0.0.1:5000/login -d "username=admin" -d "password=password123"
+curl -X POST -c cookies.txt http://127.0.0.1:5000/login -d "username=admin" -d "password=password123"
 ```
 
 **Response:**
@@ -26,6 +26,10 @@ curl -X POST http://127.0.0.1:5000/login -d "username=admin" -d "password=passwo
 }
 ```
 
+- The `-c cookies.txt` option saves the cookies (including the session cookie) to a file named `cookies.txt`.
+
+---
+
 ### Logout
 **Method:** `POST`  
 **URL:** `/logout`  
@@ -33,7 +37,7 @@ curl -X POST http://127.0.0.1:5000/login -d "username=admin" -d "password=passwo
 
 **Example cURL:**
 ```bash
-curl -X POST http://127.0.0.1:5000/logout
+curl -X POST -b cookies.txt http://127.0.0.1:5000/logout
 ```
 
 **Response:**
@@ -42,6 +46,8 @@ curl -X POST http://127.0.0.1:5000/logout
   "message": "Logged out successfully!"
 }
 ```
+
+- The `-b cookies.txt` option sends the stored cookies with the request to authenticate the logout operation.
 
 ---
 
@@ -54,7 +60,7 @@ curl -X POST http://127.0.0.1:5000/logout
 
 **Example cURL:**
 ```bash
-curl -X GET http://127.0.0.1:5000/
+curl -X GET -b cookies.txt http://127.0.0.1:5000/
 ```
 
 **Response:**
@@ -76,7 +82,7 @@ curl -X GET http://127.0.0.1:5000/
 
 **Example cURL:**
 ```bash
-curl -X POST http://127.0.0.1:5000/post/ -d "name=John Doe" -d "email=johndoe@example.com"
+curl -X POST -b cookies.txt http://127.0.0.1:5000/post/ -d "name=John Doe" -d "email=johndoe@example.com"
 ```
 
 **Response:**
@@ -100,7 +106,7 @@ curl -X POST http://127.0.0.1:5000/post/ -d "name=John Doe" -d "email=johndoe@ex
 
 **Example cURL:**
 ```bash
-curl -X GET http://127.0.0.1:5000/get/1
+curl -X GET -b cookies.txt http://127.0.0.1:5000/get/1
 ```
 
 **Response:**
@@ -126,7 +132,7 @@ curl -X GET http://127.0.0.1:5000/get/1
 
 **Example cURL:**
 ```bash
-curl -X PUT http://127.0.0.1:5000/update/1 -d "name=Jane Doe" -d "email=janedoe@example.com"
+curl -X PUT -b cookies.txt http://127.0.0.1:5000/update/1 -d "name=Jane Doe" -d "email=janedoe@example.com"
 ```
 
 **Response:**
@@ -152,7 +158,7 @@ curl -X PUT http://127.0.0.1:5000/update/1 -d "name=Jane Doe" -d "email=janedoe@
 
 **Example cURL:**
 ```bash
-curl -X PATCH http://127.0.0.1:5000/patch/1 -d "email=newemail@example.com"
+curl -X PATCH -b cookies.txt http://127.0.0.1:5000/patch/1 -d "email=newemail@example.com"
 ```
 
 **Response:**
@@ -175,7 +181,7 @@ curl -X PATCH http://127.0.0.1:5000/patch/1 -d "email=newemail@example.com"
 
 **Example cURL:**
 ```bash
-curl -X DELETE http://127.0.0.1:5000/delete/1
+curl -X DELETE -b cookies.txt http://127.0.0.1:5000/delete/1
 ```
 
 **Response:**
@@ -189,5 +195,6 @@ curl -X DELETE http://127.0.0.1:5000/delete/1
 
 ## Notes
 1. **Authentication Required:** All routes except `/login` and `/logout` require the user to be logged in.
-2. **Session Persistence:** Ensure that cookies are enabled for session-based authentication.
-3. **Security:** Use a strong secret key for sessions and secure connections (e.g., HTTPS) in production.
+2. **Cookie Handling:** Use `-c` to save cookies and `-b` to pass them in subsequent requests.
+3. **Session Management:** Ensure cookies are used properly to maintain the session across requests.
+4. **Security:** Use HTTPS in production to secure cookie transmission.
