@@ -1,14 +1,49 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
+from functools import wraps
 
 app = Flask(__name__)
+app.secret_key = "your_secret_key"  # Use a secure secret key for sessions
+
 database = {}
 next_id = 1  # Initialize the next available ID
+users = {"admin": "password123"}  # Dummy credentials for login
+
+# Decorator to enforce login
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('logged_in'):
+            return jsonify({"error": "Login required!"}), 401
+        return f(*args, **kwargs)
+    return decorated_function
+
+# Route to handle login
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not username or not password:
+        return jsonify({"error": "Username and password are required!"}), 400
+
+    if username in users and users[username] == password:
+        session['logged_in'] = True
+        return jsonify({"message": "Login successful!"})
+    else:
+        return jsonify({"error": "Invalid credentials!"}), 401
+
+# Route to handle logout
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({"message": "Logged out successfully!"})
 
 @app.route('/')
 def list_ids():
-    return jsonify({"ids" : list(database.keys())})
+    return jsonify({"ids": list(database.keys())})
 
 @app.route('/post/', methods=['POST'])
+@login_required
 def submit():
     global next_id  # Use the global variable
     name = request.form.get('name')
@@ -31,6 +66,7 @@ def submit():
     })
 
 @app.route('/get/<int:user_id>', methods=['GET'])
+@login_required
 def get_user(user_id):
     user_data = database.get(user_id)
     if not user_data:
@@ -42,6 +78,7 @@ def get_user(user_id):
     })
 
 @app.route('/update/<int:user_id>', methods=['PUT'])
+@login_required
 def update_user(user_id):
     name = request.form.get('name')
     email = request.form.get('email')
@@ -63,6 +100,7 @@ def update_user(user_id):
     })
 
 @app.route('/patch/<int:user_id>', methods=['PATCH'])
+@login_required
 def patch_user(user_id):
     if user_id not in database:
         return jsonify({"error": "User not found!"}), 404
@@ -85,6 +123,7 @@ def patch_user(user_id):
     })
 
 @app.route('/delete/<int:user_id>', methods=['DELETE'])
+@login_required
 def delete_user(user_id):
     if user_id not in database:
         return jsonify({"error": "User not found!"}), 404
@@ -96,4 +135,4 @@ def delete_user(user_id):
     })
 
 if __name__ == '__main__':
-    app.run(debug=False) # Setting False to avoid losing database data
+    app.run(debug=False)  # Setting False to avoid losing database data
