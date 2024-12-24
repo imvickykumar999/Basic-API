@@ -7,88 +7,124 @@
 
 ## Methods
 
-### 1. POST Method
-Use this method to create a new user record.
+### **Login**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/login`  
+**Method**: `POST`  
+**Command**:
+```bash
+curl -X POST https://vickscrudapi.pythonanywhere.com/login \
+     -d "username=admin" \
+     -d "password=password123" \
+     -c cookies.txt
+```
+- **`-c cookies.txt`**: Saves session cookies to a file for future authenticated requests.
 
-**Endpoint:**
-`/post/`
+---
 
-**Request:**
+### **Logout**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/logout`  
+**Method**: `POST`  
+**Command**:
+```bash
+curl -X POST https://vickscrudapi.pythonanywhere.com/logout \
+     -b cookies.txt
+```
+- **`-b cookies.txt`**: Sends the saved session cookies for authentication.
+
+---
+
+### **List All User IDs**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/`  
+**Method**: `GET`  
+**Command**:
+```bash
+curl -X GET https://vickscrudapi.pythonanywhere.com/ \
+     -b cookies.txt
+```
+
+---
+
+### **Submit User Data**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/post/`  
+**Method**: `POST`  
+**Command**:
 ```bash
 curl -X POST https://vickscrudapi.pythonanywhere.com/post/ \
--d "name=John Doe" \
--d "email=johndoe@example.com"
+     -b cookies.txt \
+     -d "name=John Doe" \
+     -d "email=johndoe@example.com"
 ```
-
-**Parameters:**
-- `name` (string): The name of the user.
-- `email` (string): The email address of the user.
 
 ---
 
-### 2. GET Method
-Retrieve all user records.
-
-**Endpoint:**
-`/`
-
-**Request:**
+### **Get User by ID**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/get/<user_id>`  
+**Method**: `GET`  
+**Command**:
 ```bash
-curl -X GET https://vickscrudapi.pythonanywhere.com/
+curl -X GET https://vickscrudapi.pythonanywhere.com/get/1 \
+     -b cookies.txt
 ```
 
 ---
 
-### 3. UPDATE Method
-Update an existing user record by ID.
-
-**Endpoint:**
-`/update/<id>`
-
-**Request:**
+### **Update User**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/update/<user_id>`  
+**Method**: `PUT`  
+**Command**:
 ```bash
 curl -X PUT https://vickscrudapi.pythonanywhere.com/update/1 \
--d "name=Jane Doe" \
--d "email=janedoe@example.com"
-```
-
-**Parameters:**
-- `name` (string): The updated name of the user.
-- `email` (string): The updated email address of the user.
-
----
-
-### 4. GET by ID Method
-Retrieve a user record by its ID.
-
-**Endpoint:**
-`/get/<id>`
-
-**Request:**
-```bash
-curl -X GET https://vickscrudapi.pythonanywhere.com/get/1
+     -b cookies.txt \
+     -d "name=Jane Doe" \
+     -d "email=janedoe@example.com"
 ```
 
 ---
 
-### 5. PATCH Method
-Partially update a user record by ID.
-
-**Endpoint:**
-`/patch/<id>`
-
-**Request:**
+### **Patch User**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/patch/<user_id>`  
+**Method**: `PATCH`  
+**Command**:
 ```bash
 curl -X PATCH https://vickscrudapi.pythonanywhere.com/patch/1 \
--d "email=newemail@example.com"
+     -b cookies.txt \
+     -d "name=John Smith"
 ```
-
-**Parameters:**
-- `email` (string): The new email address of the user.
 
 ---
 
-## Notes
-- Replace `<id>` with the actual user ID you want to access or update.
-- Ensure the required parameters are provided for each method.
-- The API uses standard HTTP status codes to indicate success or errors.
+### **Delete User**
+**Endpoint**: `https://vickscrudapi.pythonanywhere.com/delete/<user_id>`  
+**Method**: `DELETE`  
+**Command**:
+```bash
+curl -X DELETE https://vickscrudapi.pythonanywhere.com/delete/1 \
+     -b cookies.txt
+```
+
+---
+
+### **Error Handler (404)**
+If you try to access an invalid endpoint, you'll receive a response like:
+```bash
+curl -X GET https://vickscrudapi.pythonanywhere.com/invalid-endpoint
+```
+
+**Response**:
+```json
+{
+    "error": "Endpoint not found!",
+    "valid_endpoints": {
+        "/": ["GET"],
+        "/login": ["POST"],
+        "/logout": ["POST"],
+        "/post/": ["POST"],
+        "/get/<user_id>": ["GET"],
+        "/update/<user_id>": ["PUT"],
+        "/patch/<user_id>": ["PATCH"],
+        "/delete/<user_id>": ["DELETE"]
+    }
+}
+``` 
+
+Replace `<user_id>` with the desired user ID (e.g., `1`) when making requests.
