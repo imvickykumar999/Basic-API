@@ -39,6 +39,7 @@ def logout():
     return jsonify({"message": "Logged out successfully!"})
 
 @app.route('/')
+@login_required
 def list_ids():
     return jsonify({"ids": list(database.keys())})
 
@@ -126,7 +127,7 @@ def patch_user(user_id):
 @login_required
 def delete_user(user_id):
     if user_id not in database:
-        return jsonify({"error": "User not found!"}), 404
+        return jsonify({"message": "User not found!"}), 404
 
     del database[user_id]
 
